@@ -1,0 +1,21 @@
+drwxr-xr-x 1 stg_ndiaye8517 1049089        0 mars   1 11:35 Exemples_PFE/
+-rw-r--r-- 1 stg_ndiaye8517 1049089  4244231 mars   1 12:14 2014-12-16-G9plus-LB-Big-Data.pdf
+-rw-r--r-- 1 stg_ndiaye8517 1049089   287456 mars   1 12:14 plans-d-action-pour-une-mise-en-oeuvre-reussie-des-big-data.pdf
+-rw-r--r-- 1 stg_ndiaye8517 1049089   623016 mars   6 09:19 Peut-on rendre la création des applications Big Data accessible à tous _ _ Lyamine Hedjazi _ Pulse _ LinkedIn.pdf
+-rw-r--r-- 1 stg_ndiaye8517 1049089    69097 mars   6 09:20 ProjetBigData.pdf
+-rw-r--r-- 1 stg_ndiaye8517 1049089   498068 mars   6 09:57 02181_big-data-emerging-best-practices_wp_fr-FR.pdf
+-rw-r--r-- 1 stg_ndiaye8517 1049089 13223550 mars   6 10:04 Guide_du_Big_Data_2013_2014.pdf
+-rw-r--r-- 1 stg_ndiaye8517 1049089 61032923 mars   6 10:06 Guide-du-big-data-2017-2018.pdf
+-rw-r--r-- 1 stg_ndiaye8517 1049089 53385742 mars   6 10:08 Guide-du-big-data-2016-2017.pdf
+-rw-r--r-- 1 stg_ndiaye8517 1049089 46100621 mars   6 10:09 Guide-du-big-data-2015-2016.pdf
+-rw-r--r-- 1 stg_ndiaye8517 1049089 86118765 mars   6 10:18 Guide-du-big-data-2014-2015.pdf
+-rw-r--r-- 1 stg_ndiaye8517 1049089 21197696 mars   6 10:19 BD14-15_Guide_BD_14136.pdf
+drwxr-xr-x 1 stg_ndiaye8517 1049089        0 mars   6 16:16 OPAL/
+drwxr-xr-x 1 stg_ndiaye8517 1049089        0 mars   8 14:09 HIVE_PIG/
+drwxr-xr-x 1 stg_ndiaye8517 1049089        0 mars   9 08:00 Bandicoot/
+-rw-r--r-- 1 stg_ndiaye8517 1049089      165 mars   9 12:28 ~$ideation_Prompt_Algorithmisation_Data_Scientist.xlsx
+-rw-r--r-- 1 stg_ndiaye8517 1049089   212488 mars   9 12:28 ideation_Prompt_Algorithmisation_Data_Scientist.xlsx
+drwxr-xr-x 1 stg_ndiaye8517 1049089        0 mars  13 16:40 Ideation_Prompts/
+drwxr-xr-x 1 stg_ndiaye8517 1049089        0 mars  14 11:51 HUB/
+drwxr-xr-x 1 stg_ndiaye8517 1049089        0 mars  14 14:32 Nouveau dossier/
+-rw-r--r-- 1 stg_ndiaye8517 1049089        0 mars  15 10:53 fichier.txt

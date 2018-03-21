@@ -1,0 +1,20 @@
+Steps
+1- Create hive tables
+
+	a- Antenna table
+	
+	b- CDR data table
+	
+	
+2- Hive Algorithm
+
+	- Create a Table (A)-> Person | Antenna | number per days | number of antenna
+	
+	- Create an UDAF/SPARK code for important location clustering Algorithm
+	
+		output table (B) --> table in hive : Person | Cluster_id | Cluster_Lat | Cluster_Long | Sum of number of days
+		
+	- Create an Hive function that identify home / works
+		
+		output table (C) --> B + Categorization(Home/Work)
+					
