@@ -1,0 +1,25 @@
+create table algorithmisation.person_tower_days as 
+	select M.caller_msisdn, M.longitude, M.latitude, count(DISTINCT M.call_date) as tot_days 
+	from (
+		select S.caller_msisdn, S.call_date, S.call_time, T.longitude, T.latitude 
+		from algorithmisation.cdr_datas S 
+		left join algorithmisation.antennas T on (S.ms_location=T.id_cellule)
+	) M 
+	group by M.caller_msisdn, M.longitude, M.latitude;
+
+
+create table algorithmisation.person_towers as 
+	select caller_msisdn, count(DISTINCT latitude, longitude) as total_towers 
+	from algorithmisation.person_tower_days 
+	group by caller_msisdn;
+
+create table algorithmisation.person_tower_days_final as 
+	select R.*,rank() over (partition by R.caller_msisdn order by R.tot_days desc,rand() desc) as rnk 
+	from (select S.caller_msisdn, S.latitude, S.longitude, S.tot_days, M.total_towers from algorithmisation.person_tower_days S 
+	left join algorithmisation.person_towers  M  on (S.caller_msisdn=M.caller_msisdn)) R;
+
+select bts_nodeb,count(distinct latitude) from algorithmisation.antennas
+group by bts_nodeb,latitude
+having count(distinct latitude)>1
+limit 10000;
+

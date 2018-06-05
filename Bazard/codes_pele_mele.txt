@@ -1,0 +1,116 @@
+
+
+"input.regex" = "
+(.{10})(.{3})(.{1})
+(.{1})(.{1})(.{1})
+(.{1})(.{15})(.{1})
+(.{15})(.{1})(.{15})
+(.{2})(.{2})(.{8})
+(.{6})(.{6})(.{1})
+(.{15})(.{1})(.{18})
+(.{1})(.{15})(.{15})
+(.{1})(.{1})(.{1})
+(.{5})(.{8})(.{8})
+(.{10})(.{10})(.{57})"
+
+CREATE TABLE employees_stg (emplid STRING, name STRING, age INT, salary DOUBLE, dept STRING)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.RegexSerDe'
+WITH SERDEPROPERTIES (
+     "input.regex" = "(.{4})(.{35})(.{3})(.{11})(.{4})", 
+     "output.format.string" = "%1$s %2$s %3$s %4$s %5$s"
+     )
+LOCATION '/path/to/input/employees_stg';
+
+LOCATION DATA /apps/hive/warehouse/algorithmisation.db/cdr_table    
+
+"input.regex" = "(.{10})(.{3})(.{1})(.{1})(.{1})(.{1})(.{1})(.{15})(.{1})(.{15})(.{1})(.{15})(.{2})(.{2})(.{8})(.{6})(.{6})(.{1})(.{15})(.{1})(.{18})(.{1})(.{15})(.{15})(.{1})(.{1})(.{1})(.{5})(.{8})(.{8})(.{10})(.{10})(.{56})","output.format.string" = "%1$s %2$s %3$s %4$s %5$s %6$s %7$s %8$s %9$s %10$s %11$s %12$s %13$s %14$s %15$s %16$s %17$s %18$s %19$s %20$s %21$s %22$s %23$s %24$s %24$s %25$s %26$s %27$s %28$s %29$s %30$s %31$s %32$s %33$s"
+
+
+
+CREATE EXTERNAL TABLE cdr_datas(
+        Sequence_Number String,
+        Version String,
+        Switch_Type String,
+        Call_Record_Type String,
+        Subscription_Type String,
+        Call_Termination_Type String,
+        Call_Termination_Error_Code String,
+        Mobile_Subscriber_Identity String,
+        Caller_MSISDN_Type String,
+        Caller_RN String,
+        Caller_MSISDN String,
+        Call_Partner_Identity_Type String,
+        Call_Partner_Identity String,
+        Basic_Service String,
+        Bearer_Capability String,
+        Call_Date String,
+        Call_Time String,
+        Call_Duration String,
+        MSC_Identity_Type String,
+        MSC_Identity String,
+        MS_Location_Type String,
+        MS_Location String,
+        MS_Location_Extension_Type String,
+        MS_Location_Extension String,
+        Equipment_Identity String,
+        Status_of_Equipment String,
+        Call_Origin String,
+        Channel_Type String,
+        Link_Identity String,
+        PSTN_Charge String,
+        Supplementary_Services String,
+        Outgoing_Trunk_Group String,
+        Incoming_Trunk_Group String,
+        Filler String
+)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.RegexSerDe'
+WITH SERDEPROPERTIES (
+        "input.regex" = "(.{10})(.{3})(.{1})(.{1})(.{1})(.{1})(.{1})(.{15})(.{1})(.{4})(.{11})(.{1})(.{15})(.{2})(.{2})(.{8})(.{6})(.{6})(.{1})(.{15})(.{1})(.{18})(.{1})(.{15})(.{15})(.{1})(.{1})(.{1})(.{5})(.{8})(.{8})(.{10})(.{10})(.{37}).*",
+        "output.format.string" = "%11$s %16$s %17$s %22$s"
+)
+LOCATION '/data2/staging/cdrnm/sample_nov/cdr_datas';
+STORED AS ORC
+#/user/datalake/cdr/cdrnm/
+
+
+
+ # displays a directory's size in readable form
+
+/path/to/dir
+
+
+/*  Test de la fonction de Clusterisation */
+var P1 = new Point(14.712240, -17.455130, 10) //C1
+    var P2 = new Point(14.711078, -17.454701, 8) //C1
+    var P3 = new Point(14.710081, -17.455817, 7) //C1
+    var P4 = new Point(14.712738, -17.462426, 5) //C1
+
+    var P5 = new Point(14.720333, -17.447877, 2) //C2
+
+    var P6 = new Point(14.727721, -17.461825, 12) //C3
+    var P7 = new Point(14.727389, -17.461525, 8) //C3
+
+    var listPoints = List(P1,P2,P3,P4,P5, P6, P7)
+
+    var clusters = createCluster(listPoints)
+    println(clusters)
+    println(clusters.size)
+
+/* Fin Test Clusterisation */
+
+
+
+
+List(Point(14.71224, -17.45513, 10.0), Point(14.711078, -17.454701, 8.0), Point(14.710081, -17.455817, 7.0), Point(14.712738, -17.462426, 5.0), Point(14.720333, -17.447877, 2.0), Point(14.727389, -17.461525, 8.0), Point(14.727721, -17.461825, 12.0))
+List(Point(14.71224, -17.45513, 10.0), Point(14.710081, -17.455817, 7.0), Point(14.720333, -17.447877, 2.0), Point(14.727389, -17.461525, 8.0), Point(14.727389, -17.461525, 8.0), Point(14.727721, -17.461825, 12.0), Point(14.727721, -17.461825, 12.0))
+
+
+
+
+
+Taille Dossier HDFS
+
+hadoop fs -du -s -h /data2/staging/cdrnm/sample_nov/cdr_datas
+
+
+scp -p testcluster_2.10-0.1.jar dndiaye@10.100.116.10:home/dndiaye

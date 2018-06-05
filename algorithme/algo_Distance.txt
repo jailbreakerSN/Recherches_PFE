@@ -1,0 +1,36 @@
+function deg2rad(x){
+  return Math.PI*x/180;
+}
+ 
+function get_distance_m($lat1, $lng1, $lat2, $lng2) {
+  $earth_radius = 6378137;   // Terre = sphère de 6378km de rayon
+  $rlo1 = deg2rad($lng1);    // CONVERSION
+  $rla1 = deg2rad($lat1);
+  $rlo2 = deg2rad($lng2);
+  $rla2 = deg2rad($lat2);
+  $dlo = ($rlo2 - $rlo1) / 2;
+  $dla = ($rla2 - $rla1) / 2;
+  $a = (Math.sin($dla) * Math.sin($dla)) + Math.cos($rla1) * Math.cos($rla2) * (Math.sin($dlo) * Math.sin($dlo
+));
+  $d = 2 * Math.atan2(Math.sqrt($a), Math.sqrt(1 - $a));
+  return ($earth_radius * $d);
+}
+
+function degreesToRadians(degrees) {
+  return degrees * Math.PI / 180;
+}
+
+function distanceInKmBetweenEarthCoordinates(lat1, lon1, lat2, lon2) {
+  var earthRadiusKm = 6371;//6378.1370
+
+  var dLat = degreesToRadians(lat2-lat1);
+  var dLon = degreesToRadians(lon2-lon1);
+
+  lat1 = degreesToRadians(lat1);
+  lat2 = degreesToRadians(lat2);
+
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  return earthRadiusKm * c;
+}

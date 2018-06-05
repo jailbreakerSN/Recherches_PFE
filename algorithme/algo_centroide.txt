@@ -1,0 +1,23 @@
+import org.apache.spark.sql.hive.HiveContext
+import org.apache.spark.sql.functions
+
+case class Location(lat: Double, lon: Double)
+
+def toRadian(location: Location): Location = {
+	Location(Math.toRadians(location.lat), Math.toRadians(location.lon))
+}
+def centroide(locationA: Location, locationB: Location): Location = {
+	val a = toRadian(locationA)
+	val b = toRadian(locationB)
+	val Bx = Math.cos(b.lat) * Math.cos(b.lon-a.lon);
+	val By = Math.cos(b.lat) * Math.sin(b.lon-a.lon);
+	val latMid = Math.atan2(Math.sin(a.lat) + Math.sin(b.lat), Math.sqrt( (Math.cos(a.lat)+Bx)*(Math.cos(a.lat)+Bx) + By*By ))
+	val lonMid = a.lon + Math.atan2(By, Math.cos(a.lat) + Bx);
+	new Location(Math.toDegrees(latMid), Math.toDegrees(lonMid))
+}
+
+// Verify at http://www.geomidpoint.com/
+
+val a = new Location(14.696537, -17.448955)
+val b = new Location(14.705296, -17.456594)
+// expected ~ c (14.700917, -17.452774)

@@ -1,0 +1,157 @@
+A:link {
+color: #00F;
+}
+
+A:visited {
+color: #F00;
+}
+
+A:active {
+color: #FF0;
+}
+
+div.navbar2 {
+height: 1.81em;
+border: #000 solid 1px;
+border-left: none;
+background-color: #3366E1;
+margin: 0px;
+}
+div.navbar2 ul {
+margin: 0px;
+font-family: Arial, Helvetica, sans-serif;
+color: #FFF;
+line-height: 1.81em;
+white-space: nowrap;
+}
+div.navbar2 li {
+list-style-type: none;
+display: inline;
+}
+div.navbar2 li a {
+text-decoration: none;
+padding: 7px 10px;
+color: #FFF;
+}
+div.navbar2 li a:link {
+color: #FFF;
+}
+div.navbar2 li a:visited {
+    color: #CCC;
+}
+div.navbar2 li a:hover {
+font-weight: bold;
+color: #FFF;
+background-color: #36F;
+}
+img#logo {
+height: 3.67em;
+width: 9.69em;
+margin: 0px;
+border: 1px #000 solid;
+float: left;
+}
+
+body {
+margin: 0;
+padding: 0 0 0 1.5%;
+text-align: center;
+min-width: 48.12em;
+color: #000;
+background-color: #FFF;
+font-size: 100%;
+}
+
+div#main {
+width: 46.5em;
+margin-left: auto;
+margin-right: auto;
+padding: 0px;
+text-align: left;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+div#footer {
+margin:0;
+padding:0;
+text-align: center;
+font-size: 90%;
+}
+
+select {
+font-size:0.9em
+}
+
+input {
+font-size:0.9em
+}
+
+textarea {
+font-family: Arial, Helvetica, sans-serif;
+font-size: 0.9em
+}
+
+textarea.results {
+font-family:"Microsoft sans serif", helvetica, sans-serif;
+font-size:0.9em;
+margin-bottom: 5px;
+}
+
+H1 {
+font-family: Arial, Helvetica, sans-serif;
+color: #3366E1;
+}
+H2 {
+font-family: Arial, Helvetica, sans-serif;
+color: #0066FF;
+}
+H3 {
+font-family: Arial, Helvetica, sans-serif;
+color: #8A2BE2;
+}
+H4 {
+font-family: Arial, Helvetica, sans-serif;
+font-style: italic;
+color: #8A2BE2;
+}
+
+p {
+margin-left: 3.3em;
+margin-right: 3.5em;
+}
+
+ol {
+margin-left: 4.9em;
+margin-right: 3.5em;
+} 
+
+ul {
+margin-left: 4.9em;
+margin-right: 3.5em;
+}
+
+span.e {
+display: none;
+}
+
+table.fix {
+width:100%;
+margin: 0;
+}
+
+input.btn {
+background-color: #ADD8E6;
+font-weight: bold;
+border: 2px outset #d7b9c9
+}
+
+input.radio3 {
+margin-left: 3em;
+}
+
+div.ad {
+width: 95%;
+padding: 5px;
+background-color: #ADD8E6;
+border: 1px solid black;
+}

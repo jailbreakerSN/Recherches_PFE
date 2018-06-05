@@ -1,0 +1,78 @@
+var lc = List[Cluster]()
+
+  def getClusters1(listPoint: List[Point]): Unit = {
+    var p = new Point()
+    var cl = new Cluster()
+
+    var utils = new Utils()
+    p = listPoint(0)
+    var members = List[Point]()
+    members = p :: members
+
+
+    cl.members = members
+    cl.centroid = p
+
+    var i = 1
+    var j = 0
+    while (i < listPoint.size) {
+      var c = listPoint(i)
+      //println(p +" <- P, C -> "+c)
+      println(utils.calculDistance(p, c) + " ? " + p.calculateThreesold(listPoint, rnk))
+      if (utils.calculDistance(p, c) > p.calculateThreesold(listPoint, rnk)) {
+        println("Distance supérieur "+i)
+        this.lc = cl :: this.lc
+        var listPointNew = listPoint.slice(i, listPoint.size)
+        println(listPoint)
+        println(listPointNew)
+        //println(lc)
+        getClusters(listPointNew)
+        /*
+        println("Avant reassign"+i)
+        i = listPoint.size
+        println("Après reassign"+i)*/
+      } else {
+        println("Distance Inf ELse"+ j)
+        cl.members = c :: members
+        var cent = utils.centroidPond(p, cl.centroid)
+        cl.centroid = cent
+        p = cent
+        if(i == listPoint.size-1) {
+          this.lc = cl :: this.lc
+        }
+        j = j+1
+      }
+      i = i+1
+    }
+  }
+
+  def getClusters(listPoint: List[Point]): List[Cluster] = {
+    var p = new Point()
+    var cl = new Cluster()
+
+    var utils = new Utils()
+    p = listPoint(0)
+    var members = List[Point]()
+    members = p :: members
+
+    cl.members = members
+    cl.centroid = p
+    breakable {
+      for (i <- 1 until (listPoint.size)) {
+        var c = listPoint(i)
+        if (utils.calculDistance(p, c) > p.calculateThreesold(listPoint, rnk)) {
+          this.lc = cl :: this.lc
+          var listPointNew = listPoint.slice(i , listPoint.size)
+          getClusters(listPointNew)
+          //break
+        } else {
+          cl.members = c :: members
+          var cent = utils.centroidPond(p, cl.centroid)
+          cl.centroid = cent
+          p = cent
+          //break
+        }
+      }
+    }
+    lc
+  }

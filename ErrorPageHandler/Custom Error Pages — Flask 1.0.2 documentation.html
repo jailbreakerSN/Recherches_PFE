@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0052)http://flask.pocoo.org/docs/1.0/patterns/errorpages/ -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Custom Error Pages — Flask 1.0.2 documentation</title>
+    <link rel="stylesheet" href="./Custom Error Pages — Flask 1.0.2 documentation_files/flask.css" type="text/css">
+    <link rel="stylesheet" href="./Custom Error Pages — Flask 1.0.2 documentation_files/pygments.css" type="text/css">
+    <script type="text/javascript" src="./Custom Error Pages — Flask 1.0.2 documentation_files/documentation_options.js.téléchargement"></script>
+    <script type="text/javascript" src="./Custom Error Pages — Flask 1.0.2 documentation_files/jquery.js.téléchargement"></script>
+    <script type="text/javascript" src="./Custom Error Pages — Flask 1.0.2 documentation_files/underscore.js.téléchargement"></script>
+    <script type="text/javascript" src="./Custom Error Pages — Flask 1.0.2 documentation_files/doctools.js.téléchargement"></script>
+    <link rel="shortcut icon" href="http://flask.pocoo.org/docs/1.0/_static/flask-favicon.ico">
+    <link rel="index" title="Index" href="http://flask.pocoo.org/docs/1.0/genindex/">
+    <link rel="search" title="Search" href="http://flask.pocoo.org/docs/1.0/search/">
+    <link rel="next" title="Lazily Loading Views" href="http://flask.pocoo.org/docs/1.0/patterns/lazyloading/">
+    <link rel="prev" title="AJAX with jQuery" href="http://flask.pocoo.org/docs/1.0/patterns/jquery/">
+    <link rel="canonical" href="http://flask.pocoo.org/docs/1.0/patterns/errorpages/">
+  <script>DOCUMENTATION_OPTIONS.URL_ROOT = '../../';</script>
+   
+  <script id="_carbonads_projs" type="text/javascript" src="http://srv.carbonads.net/ads/CKYIE277.json?segment=placement:pocooorg&amp;callback=_carbonads_go"></script></head><body cz-shortcut-listen="true">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="http://flask.pocoo.org/docs/1.0/genindex/" title="General Index" accesskey="I">index</a></li>
+        <li class="right">
+          <a href="http://flask.pocoo.org/docs/1.0/py-modindex/" title="Python Module Index">modules</a> |</li>
+        <li class="right">
+          <a href="http://flask.pocoo.org/docs/1.0/patterns/lazyloading/" title="Lazily Loading Views" accesskey="N">next</a> |</li>
+        <li class="right">
+          <a href="http://flask.pocoo.org/docs/1.0/patterns/jquery/" title="AJAX with jQuery" accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="http://flask.pocoo.org/docs/1.0/">Flask 1.0.2 documentation</a> »</li>
+          <li class="nav-item nav-item-1"><a href="http://flask.pocoo.org/docs/1.0/patterns/" accesskey="U">Patterns for Flask</a> »</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="custom-error-pages">
+<span id="errorpages"></span><h1>Custom Error Pages<a class="headerlink" href="http://flask.pocoo.org/docs/1.0/patterns/errorpages/#custom-error-pages" title="Permalink to this headline">¶</a></h1>
+<p>Flask comes with a handy <a class="reference internal" href="http://flask.pocoo.org/docs/1.0/api/#flask.abort" title="flask.abort"><code class="xref py py-func docutils literal notranslate"><span class="pre">abort()</span></code></a> function that aborts a
+request with an HTTP error code early.  It will also provide a plain black
+and white error page for you with a basic description, but nothing fancy.</p>
+<p>Depending on the error code it is less or more likely for the user to
+actually see such an error.</p>
+<div class="section" id="common-error-codes">
+<h2>Common Error Codes<a class="headerlink" href="http://flask.pocoo.org/docs/1.0/patterns/errorpages/#common-error-codes" title="Permalink to this headline">¶</a></h2>
+<p>The following error codes are some that are often displayed to the user,
+even if the application behaves correctly:</p>
+<dl class="docutils">
+<dt><em>404 Not Found</em></dt>
+<dd>The good old “chap, you made a mistake typing that URL” message.  So
+common that even novices to the internet know that 404 means: damn,
+the thing I was looking for is not there.  It’s a very good idea to
+make sure there is actually something useful on a 404 page, at least a
+link back to the index.</dd>
+<dt><em>403 Forbidden</em></dt>
+<dd>If you have some kind of access control on your website, you will have
+to send a 403 code for disallowed resources.  So make sure the user
+is not lost when they try to access a forbidden resource.</dd>
+<dt><em>410 Gone</em></dt>
+<dd>Did you know that there the “404 Not Found” has a brother named “410
+Gone”?  Few people actually implement that, but the idea is that
+resources that previously existed and got deleted answer with 410
+instead of 404.  If you are not deleting documents permanently from
+the database but just mark them as deleted, do the user a favour and
+use the 410 code instead and display a message that what they were
+looking for was deleted for all eternity.</dd>
+<dt><em>500 Internal Server Error</em></dt>
+<dd>Usually happens on programming errors or if the server is overloaded.
+A terribly good idea is to have a nice page there, because your
+application <em>will</em> fail sooner or later (see also:
+<a class="reference internal" href="http://flask.pocoo.org/docs/1.0/errorhandling/#application-errors"><span class="std std-ref">Application Errors</span></a>).</dd>
+</dl>
+</div>
+<div class="section" id="error-handlers">
+<h2>Error Handlers<a class="headerlink" href="http://flask.pocoo.org/docs/1.0/patterns/errorpages/#error-handlers" title="Permalink to this headline">¶</a></h2>
+<p>An error handler is a function that returns a response when a type of error is
+raised, similar to how a view is a function that returns a response when a
+request URL is matched. It is passed the instance of the error being handled,
+which is most likely a <a class="reference external" href="http://werkzeug.pocoo.org/docs/exceptions/#werkzeug.exceptions.HTTPException" title="(in Werkzeug v0.14-dev)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">HTTPException</span></code></a>. An error
+handler for “500 Internal Server Error” will be passed uncaught exceptions in
+addition to explicit 500 errors.</p>
+<p>An error handler is registered with the <a class="reference internal" href="http://flask.pocoo.org/docs/1.0/api/#flask.Flask.errorhandler" title="flask.Flask.errorhandler"><code class="xref py py-meth docutils literal notranslate"><span class="pre">errorhandler()</span></code></a>
+decorator or the <a class="reference internal" href="http://flask.pocoo.org/docs/1.0/api/#flask.Flask.register_error_handler" title="flask.Flask.register_error_handler"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_error_handler()</span></code></a> method. A handler
+can be registered for a status code, like 404, or for an exception class.</p>
+<p>The status code of the response will not be set to the handler’s code. Make
+sure to provide the appropriate HTTP status code when returning a response from
+a handler.</p>
+<p>A handler for “500 Internal Server Error” will not be used when running in
+debug mode. Instead, the interactive debugger will be shown.</p>
+<p>Here is an example implementation for a “404 Page Not Found” exception:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">render_template</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">errorhandler</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">page_not_found</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+    <span class="c1"># note that we set the 404 status explicitly</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">'404.html'</span><span class="p">),</span> <span class="mi">404</span>
+</pre></div>
+</div>
+<p>When using the <a class="reference internal" href="http://flask.pocoo.org/docs/1.0/patterns/appfactories/#app-factories"><span class="std std-ref">application factory pattern</span></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">render_template</span>
+
+<span class="k">def</span> <span class="nf">page_not_found</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">'404.html'</span><span class="p">),</span> <span class="mi">404</span>
+
+<span class="k">def</span> <span class="nf">create_app</span><span class="p">(</span><span class="n">config_filename</span><span class="p">):</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">register_error_handler</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="n">page_not_found</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">app</span>
+</pre></div>
+</div>
+<p>An example template might be this:</p>
+<div class="highlight-html+jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">"layout.html"</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span>Page Not Found<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span>
+  <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Page Not Found<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>What you were looking for is just not there.
+  <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">"</span><span class="cp">{{</span> <span class="nv">url_for</span><span class="o">(</span><span class="s1">'index'</span><span class="o">)</span> <span class="cp">}}</span><span class="s">"</span><span class="p">&gt;</span>go somewhere nice<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="http://flask.pocoo.org/docs/1.0/">
+              <img class="logo" src="./Custom Error Pages — Flask 1.0.2 documentation_files/flask.png" alt="Logo">
+            </a></p>
+  <h3>Contents</h3>
+  <ul>
+<li><a class="reference internal" href="http://flask.pocoo.org/docs/1.0/patterns/errorpages/#">Custom Error Pages</a><ul>
+<li><a class="reference internal" href="http://flask.pocoo.org/docs/1.0/patterns/errorpages/#common-error-codes">Common Error Codes</a></li>
+<li><a class="reference internal" href="http://flask.pocoo.org/docs/1.0/patterns/errorpages/#error-handlers">Error Handlers</a></li>
+</ul>
+</li>
+</ul>
+<h3>Navigation</h3>
+<ul>
+  <li><a href="http://flask.pocoo.org/docs/1.0/">Overview</a>
+    <ul>
+      <li><a href="http://flask.pocoo.org/docs/1.0/patterns/">Patterns for Flask</a>
+        <ul>
+          <li>Previous: <a href="http://flask.pocoo.org/docs/1.0/patterns/jquery/" title="previous chapter">AJAX with jQuery</a>
+          </li><li>Next: <a href="http://flask.pocoo.org/docs/1.0/patterns/lazyloading/" title="next chapter">Lazily Loading Views</a></li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+  <h3>Versions</h3>
+  <ul class="versions">
+    
+      <li><a href="http://flask.pocoo.org/docs/dev/patterns/errorpages/">Development</a>
+    
+    
+      <span class="note">(unstable)</span>
+    
+  
+    
+      </li><li><a href="http://flask.pocoo.org/docs/1.0/patterns/errorpages/" class="current">Flask 1.0</a>
+    
+    
+      <span class="note">(stable)</span>
+    
+  
+    
+      </li><li><a href="http://flask.pocoo.org/docs/0.12/patterns/errorpages/">Flask 0.12</a>
+    
+    
+  </li></ul>
+
+  <div class="carbon_ads">
+    <script async="" src="./Custom Error Pages — Flask 1.0.2 documentation_files/carbon.js.téléchargement" id="_carbonads_js"></script><div id="carbonads"><span><span class="carbon-wrap"><a href="http://srv.carbonads.net/ads/click/x/GTND42QLCAADV5Q7CABLYKQMCVSIEK3JCTYDVZ3JCW7DEK3LC6SDK2JKC6BI627YCYBI6K3EHJNCLSIZ?segment=placement:pocooorg;" class="carbon-img" target="_blank" rel="noopener"><img src="./Custom Error Pages — Flask 1.0.2 documentation_files/1525734314-creative1_copy1.jpg" alt="" border="0" height="100" width="130" style="max-width: 130px;"></a><a href="http://srv.carbonads.net/ads/click/x/GTND42QLCAADV5Q7CABLYKQMCVSIEK3JCTYDVZ3JCW7DEK3LC6SDK2JKC6BI627YCYBI6K3EHJNCLSIZ?segment=placement:pocooorg;" class="carbon-text" target="_blank" rel="noopener">40+ SDKs. 100+ tutorials. 250,000 developers trust us. Generous free plan.</a></span><a href="http://carbonads.net/?utm_source=pocooorg&amp;utm_medium=ad_via_link&amp;utm_campaign=in_unit&amp;utm_term=carbon" class="carbon-poweredby" target="_blank" rel="noopener">ads via Carbon</a></span></div>
+  </div>
+
+<div id="searchbox" style="" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="http://flask.pocoo.org/docs/1.0/search/" method="get">
+      <input type="text" name="q">
+      <input type="submit" value="Go">
+      <input type="hidden" name="check_keywords" value="yes">
+      <input type="hidden" name="area" value="default">
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+        © Copyright 2010 Pallets Team.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
+    </div>
+  
+</body></html>

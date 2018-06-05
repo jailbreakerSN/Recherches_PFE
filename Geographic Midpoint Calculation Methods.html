@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- saved from url=(0043)http://www.geomidpoint.com/calculation.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Geographic Midpoint Calculation Methods</title>
+
+<link href="./Geographic Midpoint Calculation Methods_files/global.css" rel="STYLESHEET" type="text/css">
+</head>
+
+<body cz-shortcut-listen="true">
+<div id="main">
+<a href="http://www.geomidpoint.com/"><img id="logo" src="./Geographic Midpoint Calculation Methods_files/geomidlogo.jpg" alt="Welcome logo"></a>
+<div id="navwrap">
+<div class="navbar2">
+<ul>
+<li><a href="http://www.geomidpoint.com/">Midpoint Calculator</a></li>
+<li><a href="http://www.geomidpoint.com/meet/">Let's meet in the middle</a></li>
+<li><a href="http://www.geomidpoint.com/random/">Random point Generator</a></li>
+</ul>
+</div>
+<div class="navbar2" style="border-top: none">
+<ul>
+<li><a href="http://www.geomidpoint.com/destination/">Bearing/distance calculator</a></li>
+<li><a href="http://www.geomidpoint.com/calculation.html">Calculation methods</a></li>
+<li><a href="http://www.geomidpoint.com/help.html">Help</a></li>
+<li><a href="http://www.geomidpoint.com/ayuda.html">Español</a></li>
+</ul>
+</div>
+</div>
+
+<h1>Calculation Methods</h1>
+<p>
+This page shows how to calculate the geographic midpoint (also known as the geographic center, or center of gravity) for two or more points on the earth's surface. A second method is given showing how to calculate the center of minimum distance<sup>**</sup>, and finally a third method calculates the average latitude/longitude. There are <a href="http://www.geomidpoint.com/methods.html">reasons for choosing</a> one method over another. The first two methods assume that the earth is a perfect sphere, which yields sufficiently accurate results for most purposes. In contrast, the third method uses a flat earth model.
+</p>
+<p>
+We will assume that the latitude and longitude data for the calculations comes from a list called 'Your places'. Each location may be weighted in one of three ways:
+</p>
+<ul>
+<li>Weight by time. Use this to specify the amount of time you have lived in each location in order to find the geographic average location for all of the places you have lived in. The time for each location is converted into days, for example: w<sub>1</sub> = years*365.25 + months*0.4375 + days.
+</li><li>Simple weighting factor, such as population for each location can be stored in w<sub>1</sub>, w<sub>2</sub> etc.
+</li><li>Equal weight. If no location is to be weighted more than another then set w<sub>1</sub>, w<sub>2</sub> etc all = 1.
+</li></ul>
+<h2>A. Geographic midpoint</h2>
+<p>
+Note: See this <a href="http://www.geomidpoint.com/example.html">example</a> showing step-by-step numerical calculations using real latitude and longitude data. The formulas below show how to weight by time.
+</p>
+<h3>Summary</h3>
+<p>
+The geographic midpoint is calculated by finding the center of gravity for the locations in the 'Your Places' list. The latitude and longitude for each location is converted into Cartesian (x,y,z) coordinates. The x,y, and z coordinates are then multiplied by the weighting factor and added together. A line can be drawn from the center of the earth out to this new x, y, z coordinate, and the point where the line intersects the surface of the earth is the geographic midpoint. This surface point is converted into the latitude and longitude for the midpoint.<br>
+</p>
+<h3>Details</h3>
+<ol><li>
+Given the values for the first location in the list:<br>
+Lat<sub>1</sub>, lon<sub>1</sub>, years<sub>1</sub>, months<sub>1</sub> and days<sub>1</sub><br>
+Convert Lat<sub>1</sub> and Lon<sub>1</sub> from degrees to radians.<br>
+lat<sub>1</sub> = lat<sub>1</sub> * PI/180<br>
+lon<sub>1</sub> = lon<sub>1</sub> * PI/180</li>
+<li>
+Convert lat/lon to Cartesian coordinates for first location.<br>
+X<sub>1</sub> = cos(lat<sub>1</sub>) * cos(lon<sub>1</sub>)<br>
+Y<sub>1</sub> = cos(lat<sub>1</sub>) * sin(lon<sub>1</sub>)<br>
+Z<sub>1</sub> = sin(lat<sub>1</sub>)</li>
+<li>
+Compute weight (by time) for first location.<br>
+w<sub>1</sub>= (years<sub>1</sub> * 365.25) + (months<sub>1</sub> * 30.4375) + days<sub>1</sub><br>
+If locations are to be weighted equally, set w<sub>1</sub>, w<sub>2</sub> etc all equal to 1.</li>
+<li>
+Repeat steps 1-3 for all remaining locations in the list.
+</li><li>
+Compute combined total weight for all locations.<br>
+Totweight = w<sub>1</sub> + w<sub>2</sub> + ... + w<sub>n</sub></li>
+<li>
+Compute weighted average x, y and z coordinates.<br>
+x = ((x<sub>1</sub> * w<sub>1</sub>) + (x<sub>2</sub> * w<sub>2</sub>) + ... + (x<sub>n</sub> * w<sub>n</sub>)) / totweight<br>
+y = ((y<sub>1</sub> * w<sub>1</sub>) + (y<sub>2</sub> * w<sub>2</sub>) + ... + (y<sub>n</sub> * w<sub>n</sub>)) / totweight<br>
+z = ((z<sub>1</sub> * w<sub>1</sub>) + (z<sub>2</sub> * w<sub>2</sub>) + ... + (z<sub>n</sub> * w<sub>n</sub>)) / totweight</li>
+<li>
+Convert average x, y, z coordinate to latitude and longitude. Note that in Excel and possibly some other applications, the parameters need to be reversed in the atan2 function, for example, use atan2(X,Y) instead of atan2(Y,X).<br>
+Lon = atan2(y, x)<br>
+Hyp = sqrt(x * x + y * y)<br>
+Lat = atan2(z, hyp)</li>
+<li>
+Convert lat and lon to degrees.<br>
+lat = lat * 180/PI<br>
+lon = lon * 180/PI
+</li><li>
+Special case:<br>
+If abs(x) &lt; 10<sup>-9</sup> and abs(y) &lt; 10<sup>-9</sup> and abs(z) &lt; 10<sup>-9</sup> then the geographic midpoint is the center of the earth.
+</li></ol>
+<h3>Notes for method A</h3>
+<p>
+The (x,y,z) coordinate system is based on the xy plane lying within the equatorial plane, with its origin at the center of the earth. Looking down onto the North Pole, the positive x-axis passes through the Greenwich meridian (0°E), the positive y-axis passes through the 90°E meridian, and the positive z-axis extends from the center of the earth through the North Pole. The calculations use a unit radius (radius = 1) for the earth. Absolute cartesian coordinates in miles or km can be obtained by multiplying x, y and z by the radius of the earth. Most computer applications require that latitude and longitude data be converted to radians before using them in the trig functions.<br>
+</p>
+<h2>B. Center of minimum distance</h2>
+<p>
+This method uses a mathematical algorithm to find the exact point that minimizes the total travel distance from all locations in 'Your Places'. The mathematical implementation of this algorithm is fairly complex, but the general steps are described below. All distances are calculated using the spherical law of cosines given below. 
+</p>
+<h3>Description</h3>
+<ol>
+<li>
+Let CurrentPoint be the geographic midpoint found in Method A. this is used as the starting point for the search.
+</li><li>
+Let MinimumDistance be the sum total of all distances from the current point to all locations in 'Your Places'.
+</li><li>
+Find the total distance between each location in 'Your Places' and all other locations in 'Your Places'. If any one of these locations has a new smallest distance then that location becomes the new CurrentPoint and MinimumDistance.
+</li><li>
+Let TestDistance be PI/2 radians (6225 miles or 10018 km).
+</li><li>
+Find the total distance between each of 8 test points and all locations in 'Your Places'. The test points are arranged in a circular pattern around the CurrentPoint at a distance of TestDistance to the north, northeast, east, southeast, south, southwest, west and northwest.
+</li><li>
+If any of these 8 points has a new smallest distance then that point becomes the new CurrentPoint and MinimumDistance and go back to step 5 using that point.
+</li><li>
+If none of the 8 test points has a new smallest distance then divide TestDistance  by 2 and go back to step 5 using the same point.
+</li><li>
+Repeat steps 5 to 7 until no new smallest distance can be found or until TestDistance is less than 0.00000002 radians.
+</li></ol>
+<h3>Spherical law of cosines</h3>
+<p>
+distance = acos(sin(lat<sub>1</sub>)*sin(lat<sub>2</sub>) + cos(lat<sub>1</sub>)*cos(lat<sub>2</sub>)*cos(lon<sub>2</sub> - lon<sub>1</sub>))
+</p>
+<h2>C. Average latitude/longitude</h2>
+<p>
+This method finds a simple average latitude and longitude for the locations in 'Your Places'. This is equivalent to finding a midpoint on a flat rectangular projection map. When the distance between locations is less than 250 miles (400 km), this method gives a close approximation to the true geographic midpoint in Method A.
+</p>
+<h3>Details</h3>
+<ol>
+<li>
+Use the values calculated in Method A for each location: lat<sub>1</sub> to lat<sub>n</sub>, lon<sub>1</sub> to lon<sub>n</sub>, w<sub>1</sub> to w<sub>n</sub>, and totweight.
+</li><li>
+All longitudes in 'Your Places' are adjusted so as to be relative to the geographic midpoint longitude calculated in Method A. This helps eliminate the problems associated with locations on both sides of the International Date Line. For example:<br>
+lon<sub>1</sub> = lon<sub>1</sub> - lon<sub>GeographicMidpoint</sub><br>
+then if the resulting lon<sub>1</sub> lies outside the range -180 to 180, then add or subtract 360 to bring it back into that range.  
+</li><li>
+Calculate the weighted latitude and longitude.<br>
+lat = (lat<sub>1</sub>*w<sub>1</sub> + lat<sub>2</sub>*w<sub>2</sub> + ... + lat<sub>n</sub>*w<sub>n</sub>)/totweight<br>
+lon = (lon<sub>1</sub>*w<sub>1</sub> + lon<sub>2</sub>*w<sub>2</sub> + ... + lon<sub>n</sub>*w<sub>n</sub>)/totweight<br>
+</li><li>
+Add the longitude of the geographic midpoint to return the calculated longitude to its original reference:<br>
+lon = lon + lon<sub>GeographicMidpoint</sub><br>
+Add or subtract 360 from lon if it falls outside the range -180 to 180.
+</li></ol>
+<p>
+<sup>**</sup>The center of minimum distance concept and algorithm developed by GeoMidpoint.
+</p>
+<h2>Geographic Midpoint Calculator</h2>
+<p>
+See how the midpoint calculations can work in real life with this free online application. With the <a href="http://www.geomidpoint.com/">Geographic Midpoint Calculator</a> you can find the midpoint of an airline flight between two cities. You can also find your personal center of gravity by selecting all of the locations that you have lived in, then view all of those locations displayed on a map along with a marker pointing at the location of your exact personal center of gravity.
+</p>
+<h2>Random Point Generator With Maps</h2>
+<p>
+The <a href="http://www.geomidpoint.com/random/">Random Point Generator</a> generates points at random locations on the surface of the earth. You can throw one or more virtual darts at a Google map and see where they land at.<br>
+<a href="http://www.geomidpoint.com/random/calculation.html">Random point generator calculation methods</a><br>
+</p>
+<h2>Let's meet in the middle</h2>
+<p>
+<a href="http://www.geomidpoint.com/meet/">This free tool</a> finds the ideal restaurant or other point of interest halfway between two or more addresses. Meet your friend or business acquaintance for lunch.
+</p>
+<p>
+<a href="http://www.geomidpoint.com/methods.html">Next</a><br>
+<a href="http://www.movable-type.co.uk/scripts/latlong.html">Distance calculator</a><br> 
+<a href="http://www.geomidpoint.com/">Home</a>
+</p>
+</div>  
+
+
+
+</body></html>
